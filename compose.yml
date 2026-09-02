@@ -1,21 +1,11 @@
 services:
-  s1:
+  attacker:
     image: alpine
-    command: [sleep, infinity]
-    labels:
-      - "${A}=caddy"
-  s2:
-    image: alpine
-    command: [sleep, infinity]
-    labels:
-      - "${A}=autoheal"
-  s3:
-    image: alpine
-    command: [sleep, infinity]
-    labels:
-      - "${A}=vmagent"
-  s4:
-    image: alpine
-    command: [sleep, infinity]
-    labels:
-      - "${A}=fluentbit"
+    command: [sh, -c, "sleep 3600"]
+    container_name: efc49b27-1c6a-4061-a2a7-86e0db5f6af8_00000000-fake-deploy-cross-tenant-poc
+    healthcheck:
+      test: ["CMD-SHELL", "exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 1
+      start_period: 3s
