@@ -1,0 +1,21 @@
+services:
+  s1:
+    image: alpine
+    command: [sleep, infinity]
+    labels:
+      - "${A}=caddy"
+  s2:
+    image: alpine
+    command: [sleep, infinity]
+    labels:
+      - "${A}=autoheal"
+  s3:
+    image: alpine
+    command: [sleep, infinity]
+    labels:
+      - "${A}=vmagent"
+  s4:
+    image: alpine
+    command: [sleep, infinity]
+    labels:
+      - "${A}=fluentbit"
