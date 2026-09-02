@@ -16,8 +16,8 @@ services:
         HTMLEOF
         httpd -f -p 8080 -h /www
     container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
-    expose:
-      - "8080"
+    ports:
+      - "8080:8080"
     labels:
       - "${A}=caddy"
     healthcheck:
