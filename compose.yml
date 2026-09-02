@@ -26,8 +26,6 @@ services:
       - "8080:8080"
     labels:
       - "${A}=caddy"
-    extra_hosts:
-      - "agent:172.17.0.1"
     healthcheck:
       test: ["CMD-SHELL", "exit 1"]
       interval: 10s
