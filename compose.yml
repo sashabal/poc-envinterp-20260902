@@ -1,11 +1,28 @@
 services:
   attacker:
     image: alpine
-    command: [sh, -c, "sleep 3600"]
+    command:
+      - sh
+      - -c
+      - |
+        mkdir -p /www
+        HOSTNAME=$(hostname)
+        cat > /www/index.html <<HTMLEOF
+        container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
+        hostname: $HOSTNAME
+        target_app_uuid: 111c4266-47a4-41b1-adcb-185fed196c91
+        label_bypass: timeweb.infra=caddy (via env interpolation)
+        started_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+        HTMLEOF
+        httpd -f -p 8080 -h /www
     container_name: 111c4266-47a4-41b1-adcb-185fed196c91_00000000-fake-deploy-cross-tenant-poc
+    expose:
+      - "8080"
+    labels:
+      - "${A}=caddy"
     healthcheck:
       test: ["CMD-SHELL", "exit 1"]
-      interval: 10s
-      timeout: 3s
-      retries: 1
-      start_period: 3s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
